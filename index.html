@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memory Atlas Gallery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Manrope:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="bg-orb orb-a"></div>
+    <div class="bg-orb orb-b"></div>
+    <div class="texture"></div>
+
+    <header class="hero reveal">
+        <h1>Memory Atlas</h1>
+        <p>Gallery ảnh và video theo phong cách Unsplash, có thời gian và địa điểm trên từng thẻ nội dung.</p>
+        <div class="hero-actions">
+            <button class="tab-btn active" data-tab="gallery">Gallery</button>
+            <button class="tab-btn" data-tab="admin">Quản lý dữ liệu</button>
+        </div>
+    </header>
+
+    <main>
+        <section id="gallery" class="tab-panel active">
+            <div class="gallery-note reveal">
+                <p>Mẹo: di chuột vào từng thẻ để xem thông tin thời gian, địa điểm và mô tả.</p>
+            </div>
+
+            <div id="galleryGrid" class="masonry-grid"></div>
+        </section>
+
+        <section id="admin" class="tab-panel">
+            <div id="authCard" class="card auth-card reveal">
+                <h2>Đăng nhập quản trị</h2>
+                <p class="auth-note">Cần đăng nhập để thêm, sửa hoặc xóa dữ liệu trong database.</p>
+                <form id="authForm">
+                    <label>
+                        Email
+                        <input id="authEmail" type="email" required placeholder="you@example.com" />
+                    </label>
+                    <label>
+                        Mật khẩu
+                        <input id="authPassword" type="password" required minlength="6" />
+                    </label>
+                    <div class="form-actions">
+                        <button type="submit" class="primary" id="authSubmitBtn">Đăng nhập</button>
+                        <button type="button" id="authModeBtn">Tạo tài khoản</button>
+                    </div>
+                    <p id="authStatus" class="status"></p>
+                </form>
+            </div>
+
+            <div id="adminPanel" class="admin-grid hidden">
+                <form id="mediaForm" class="card reveal">
+                    <h2>Thêm hoặc chỉnh sửa mục</h2>
+
+                    <input type="hidden" id="mediaId" />
+                    <input type="hidden" id="storagePathInput" />
+
+                    <label>
+                        Tiêu đề
+                        <input id="titleInput" type="text" required />
+                    </label>
+
+                    <label>
+                        Mô tả
+                        <textarea id="descriptionInput" rows="3" placeholder="Mô tả ngắn..."></textarea>
+                    </label>
+
+                    <label>
+                        Loại
+                        <select id="mediaTypeInput" required>
+                            <option value="image">Ảnh</option>
+                            <option value="video">Video</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        URL ảnh hoặc video
+                        <input id="urlInput" type="url" required placeholder="https://..." />
+                    </label>
+
+                    <label>
+                        Hoặc tải file lên Supabase Storage
+                        <input id="fileInput" type="file" accept="image/*,video/*" />
+                    </label>
+
+                    <div class="form-actions compact">
+                        <button type="button" id="uploadBtn">Tải file lên</button>
+                    </div>
+                    <p id="uploadStatus" class="status"></p>
+
+                    <div id="uploadProgress" class="upload-progress hidden" aria-hidden="true">
+                        <div id="uploadProgressBar" class="upload-progress-bar"></div>
+                    </div>
+
+                    <div id="uploadPreview" class="upload-preview hidden">
+                        <img id="uploadPreviewImage" alt="Upload preview" class="hidden" />
+                        <video id="uploadPreviewVideo" controls class="hidden"></video>
+                    </div>
+
+                    <label>
+                        Địa điểm
+                        <input id="locationInput" type="text" required placeholder="Đà Lạt, Việt Nam" />
+                    </label>
+
+                    <label>
+                        Mốc thời gian
+                        <input id="dateInput" type="date" required />
+                    </label>
+
+                    <label>
+                        Thẻ (cách nhau bằng dấu phẩy)
+                        <input id="tagsInput" type="text" placeholder="du lich, gia dinh" />
+                    </label>
+
+                    <div class="form-actions">
+                        <button type="submit" class="primary">Lưu</button>
+                        <button type="button" id="resetFormBtn">Mới</button>
+                        <button type="button" id="logoutBtn">Đăng xuất</button>
+                    </div>
+                    <p id="formStatus" class="status"></p>
+                </form>
+
+                <div class="card reveal">
+                    <h2>Dữ liệu hiện có</h2>
+                    <div id="adminList" class="admin-list"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <template id="mediaItemTemplate">
+        <article class="media-card reveal-item">
+            <div class="media-preview"></div>
+            <div class="media-overlay">
+                <p class="media-place"></p>
+                <p class="media-date"></p>
+                <h3 class="media-title"></h3>
+                <p class="media-description"></p>
+                <div class="chips"></div>
+            </div>
+        </article>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
